@@ -1,18 +1,27 @@
-const express = require('express');
-const cors = express('cors');
-// const cors = require('./middleware/cors');
+require('dotenv').config();
 
+const express = require('express');
+const cors = require('cors');
+const morgan = require('morgan');
+
+// const cors = require('./middleware/cors');
+const router = require('./routes')
+const { connectToDB } = require('./utils/db');
+
+const PORT = process.env.PORT || 3000;
 const app = express();
+
+const morganLog = process.env.NODE_ENV === 'production' ? morgan('common') : morgan('dev');
+app.use(morganLog);
+app.use(cors());
 
 app.use(express.json());
 
-const router = express.Router();
+app.use('/api', router);
 
-app.use(cors);
+connectToDB();
 
-app.use(router);
-
-app.listen(3000, ()=>{
-    console.log('localhost server is listening on port 3000!')
+app.listen(PORT, ()=>{
+    console.log(`localhost server is listening on port ${PORT}!`)
 });
 
