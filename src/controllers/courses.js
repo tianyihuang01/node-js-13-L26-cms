@@ -24,7 +24,7 @@ async function updateCourseById(req, res) {
 		id,
 		{ name, description },
 		{ new: true }
-	);
+	).exec();
 	if (!course) {
 		return res.sendStatus(404);
 	}
@@ -33,7 +33,7 @@ async function updateCourseById(req, res) {
 
 async function deleteCourseById(req, res) {
 	const { id } = req.params;
-	const course = await Course.findByIdAndDelete(id);
+	const course = await Course.findByIdAndDelete(id).exec();
 	if (!course) {
 		return res.sendStatus(404);
 	}
@@ -41,11 +41,11 @@ async function deleteCourseById(req, res) {
 }
 
 async function createCourse(req, res) {
-    const { code, name, description } = req.body;
-    // validation
-    const course = new Course({_id: code, name, description});
-    await course.save();
-    return res.status(201).json(course);
+	const { code, name, description } = req.body;
+	// validation
+	const course = new Course({ _id: code, name, description });
+	await course.save();
+	return res.status(201).json(course);
 }
 
 module.exports = {
