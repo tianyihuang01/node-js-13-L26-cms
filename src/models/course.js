@@ -14,6 +14,7 @@ const schema = new Schema(
 			type: String,
 			default: 'This is a description',
 		},
+		students: [{ type: Schema.Types.ObjectId, ref: 'Student' }],
 	},
 	{
 		timestamps: true,

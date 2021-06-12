@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const Course = require('../models/course');
+const Student = require('../models/student');
 
 // function tryCatch(routeHandler) {
 // 	return (req, res, next) => {
@@ -48,6 +49,10 @@ async function deleteCourseById(req, res) {
 	if (!course) {
 		return res.sendStatus(404);
 	}
+	await Student.updateMany(
+		{ courses: course._id },
+		{ $pull: { courses: course._id } }
+	);
 	return res.json(course);
 }
 
