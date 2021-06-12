@@ -6,6 +6,7 @@ const {
 	deleteCourseById,
 	createCourse,
 } = require('../controllers/courses');
+// const errorHandler = require('../middleware/errorHandler');
 
 const router = express.Router();
 

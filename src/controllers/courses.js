@@ -1,4 +1,15 @@
+const Joi = require('joi');
 const Course = require('../models/course');
+
+// function tryCatch(routeHandler) {
+// 	return (req, res, next) => {
+// 		try {
+// 			routeHandler(req, res, next);
+// 		} catch (e) {
+// 			return e;
+// 		}
+// 	};
+// }
 
 async function getAllCourses(req, res) {
 	const course = await Course.find().exec();
@@ -41,9 +52,52 @@ async function deleteCourseById(req, res) {
 }
 
 async function createCourse(req, res) {
-	const { code, name, description } = req.body;
+	// const { code, name, description } = req.body;
 	// validation
+	const nameValidator = Joi.string().min(2).max(10).required();
+	const codeValidator = Joi.string()
+		.regex(/^[a-zA-Z0-9]+$/)
+		.required();
+	const schema = Joi.object({
+		name: nameValidator,
+		code: codeValidator,
+		description: Joi.string(),
+	});
+	const { code, name, description } = await schema.validateAsync(req.body, {
+		allowUnknown: true,
+		stripUnknown: true,
+		abortEarly: false,
+	});
+
+	// handle error approach 1
+	// try {
+	// 	const { code, name, description } = await schema.validateAsync(req.body, {
+	// 		allowUnknown: true,
+	// 		stripUnknown: true,
+	// 		abortEarly: false,
+	// 	});
+	// } catch (e) {
+	// 	return res.send(e);
+	// }
+
+	// handle error approach 2 (NOT TESTED)
+	// course.save((error, result) => {
+	// 	if (error) next(e);
+	// 	res.status(201).json(result);
+	// });
+
+	// handle error approach 3 (NOT TESTED)
+	// course
+	// 	.save()
+	// 	.then((result) => {
+	// 		res.status(201).json(result);
+	// 	})
+	// 	.catch((error) => {
+	// 		next(error);
+	// 	});
+
 	const course = new Course({ _id: code, name, description });
+
 	await course.save();
 	return res.status(201).json(course);
 }

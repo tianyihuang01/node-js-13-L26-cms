@@ -1,3 +1,4 @@
+const Joi = require('joi');
 const Student = require('../models/student');
 
 async function getAllStudents(req, res) {
