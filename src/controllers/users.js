@@ -8,6 +8,7 @@ async function addUser(req, res) {
 	if (existedUser) return res.status(409).json('User already exist !!');
 
 	const user = new User({ username, password });
+	await user.hashPassword();
 	await user.save();
 
 	// token config

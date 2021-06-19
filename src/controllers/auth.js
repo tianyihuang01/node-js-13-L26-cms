@@ -8,7 +8,11 @@ async function login(req, res) {
 	if (!user) return res.status(404).json('username is not found!');
 
 	//fail test
-	if (user.password !== password)
+	// if (user.password !== password)
+	// 	return res.status(401).json('invalid username or password!');
+
+	const validPassword = await user.validatePassword(password);
+	if (!validPassword)
 		return res.status(401).json('invalid username or password!');
 
 	const token = generateToken({ id: user._id });
