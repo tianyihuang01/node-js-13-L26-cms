@@ -5,10 +5,10 @@ const cors = require('cors');
 const morgan = require('morgan');
 
 const router = require('./routes');
-const { connectToDB } = require('./utils/db');
+// const { connectToDB } = require('./utils/db');
 const errorHandler = require('./middleware/errorHandler');
 
-const PORT = process.env.PORT || 3000;
+// const PORT = process.env.PORT || 3000;
 const app = express();
 
 const morganLog =
@@ -22,8 +22,10 @@ app.use('/api', router);
 
 app.use(errorHandler);
 
-connectToDB();
+// connectToDB();
 
-app.listen(PORT, () => {
-	console.log(`localhost server is listening on port ${PORT}!`);
-});
+// app.listen(PORT, () => {
+// 	console.log(`localhost server is listening on port ${PORT}!`);
+// });
+
+module.exports = app;

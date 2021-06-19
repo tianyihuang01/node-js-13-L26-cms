@@ -4,9 +4,10 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "nodemon src/index.js",
-		"debug": "nodemon --inspect src/index.js"
+		"start": "nodemon ./index.js",
+		"debug": "nodemon --inspect ./index.js",
+		"test": "jest",
+		"test:watch": "jest --watch"
 	},
 	"keywords": [],
 	"author": "",
@@ -23,6 +24,8 @@
 		"morgan": "^1.10.0"
 	},
 	"devDependencies": {
-		"nodemon": "^2.0.7"
+		"jest": "^27.0.4",
+		"nodemon": "^2.0.7",
+		"supertest": "^6.1.3"
 	}
 }
