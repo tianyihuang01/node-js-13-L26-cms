@@ -3,17 +3,17 @@ const { Schema, model } = require('mongoose');
 const schema = new Schema({
 	firstName: {
 		type: String,
-		require: true,
+		required: true,
 		trim: true,
 	},
 	lastName: {
 		type: String,
-		require: true,
+		required: true,
 		trim: true,
 	},
 	email: {
 		type: String,
-		require: true,
+		required: true,
 	},
 	courses: [{ type: String, ref: 'Course' }],
 });
