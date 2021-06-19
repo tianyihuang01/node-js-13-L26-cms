@@ -10,7 +10,7 @@ async function getAllStudents(req, res) {
 
 async function getStudentById(req, res) {
 	const { id } = req.params;
-	const student = await Student.findById(id).exec();
+	const student = await Student.findById(id).populate('courses', 'name').exec();
 	if (!student) return res.sendStatus(404);
 	return res.json(student);
 }
