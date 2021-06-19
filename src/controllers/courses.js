@@ -101,6 +101,10 @@ async function createCourse(req, res) {
 	// 		next(error);
 	// 	});
 
+	// check duplicated course id
+	const existedCourse = Course.findById(code).exec();
+	if (existedCourse) return res.sendStatus(409);
+
 	const course = new Course({ _id: code, name, description });
 
 	await course.save();
