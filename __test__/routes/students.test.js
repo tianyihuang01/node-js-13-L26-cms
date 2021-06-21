@@ -27,7 +27,7 @@ describe('/students', () => {
 		await Student.deleteMany({});
 	});
 
-	describe('POST', () => {
+	describe('POST /', () => {
 		const validStudent = {
 			firstName: 'Tianyi',
 			lastName: 'Wong',
@@ -41,6 +41,7 @@ describe('/students', () => {
 		it('should return 201 if request is valid', async () => {
 			// connectToDB();
 			const res = await createStudent(validStudent);
+			// console.log(res.body);
 			expect(res.statusCode).toBe(201);
 			// await Student.deleteMany({});
 		});
@@ -82,58 +83,42 @@ describe('/students', () => {
 		});
 	});
 
-	// describe('GET', () => {
-	// 	const validStudent = {
-	// 		firstName: 'Tianyi',
-	// 		lastName: 'Wong',
-	// 		email: 'test@eg.com',
-	// 	};
+	describe('GET /', () => {
+		const validStudents = [
+			{
+				firstName: 'Ab',
+				lastName: 'Bb',
+				email: 'test@test.com',
+			},
+			{
+				firstName: 'Ab',
+				lastName: 'Ab',
+				email: 'test@test.com',
+			},
+			{
+				firstName: 'Ca',
+				lastName: 'Bb',
+				email: 'test@test.com',
+			},
+		];
 
-	// 	const createStudent = async (body) => {
-	// 		return request.post('/api/students').send(body);
-	// 	};
+		const getStudent = async () => {
+			// await Student.insertMany(validStudents);
+			return request.get('/api/students');
+		};
 
-	// 	it('should return 201 if request is valid', async () => {
-	// 		// connectToDB();
-	// 		const res = await createStudent(validStudent);
-	// 		expect(res.statusCode).toBe(201);
-	// 		// await Student.deleteMany({});
-	// 	});
+		beforeEach(async () => {
+			await Student.insertMany(validStudents);
+			// console.log('done!!!');
+		});
 
-	// 	it('should save student to database if request is valid', async () => {
-	// 		// connectToDB();
-	// 		const res = await createStudent(validStudent);
-	// 		const student = await Student.findOne({
-	// 			email: validStudent.email,
-	// 		}).exec();
-	// 		expect(student.firstName).toBe('Tianyi');
-	// 		expect(student.lastName).toBe('Wong');
-	// 		// await Student.deleteMany({});
-	// 	});
-
-	// 	it('should return 400 if email is missing', async () => {
-	// 		const res = await createStudent({
-	// 			firstName: 'Tianyi',
-	// 			lastName: 'Wong',
-	// 		});
-	// 		expect(res.statusCode).toBe(400);
-	// 	});
-
-	// 	it.each`
-	// 		field          | value
-	// 		${'firstName'} | ${undefined}
-	// 		${'lastName'}  | ${undefined}
-	// 		${'email'}     | ${undefined}
-	// 		${'firstName'} | ${'a'}
-	// 		${'email'}     | ${'@'}
-	// 		${'email'}     | ${'a@'}
-	// 		${'email'}     | ${'a@b'}
-	// 		${'email'}     | ${'a@b.c'}
-	// 	`('should return 400 when $field is $value', async ({ field, value }) => {
-	// 		const student = { ...validStudent }; //浅拷贝
-	// 		student[field] = value;
-	// 		const res = await createStudent(student);
-	// 		expect(res.statusCode).toBe(400);
-	// 	});
-	// });
+		it('should return all students', async () => {
+			const res = await getStudent();
+			// console.log(res.body);
+			expect(res.status).toBe(200);
+			// expect(res.body).toEqual(expect.arrayContaining(validStudents));
+			expect(res.body.length).toBeGreaterThanOrEqual(3);
+			expect(res.body[0]).toHaveProperty('firstName');
+		});
+	});
 });
