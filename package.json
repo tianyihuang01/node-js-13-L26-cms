@@ -6,6 +6,7 @@
 	"scripts": {
 		"start": "pm2 start index.js --name jrCMS",
 		"poststart": "pm2 log jrCMS",
+		"stop": "pm2 stop jrCMS",
 		"dev": "nodemon ./index.js",
 		"debug": "nodemon --inspect ./index.js",
 		"test": "jest",
