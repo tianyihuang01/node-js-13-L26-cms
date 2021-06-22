@@ -2,8 +2,11 @@ const supertest = require('supertest');
 const app = require('../../src/app');
 const Student = require('../../src/models/student');
 const { connectToDB, disconnectDB } = require('../../src/utils/db');
+const { generateToken } = require('../../src/utils/jwt');
 
 const request = supertest(app);
+
+const TOKEN = generateToken({ id: 'fake_id' });
 
 // test('1+1===2', () => {
 // 	expect(1 + 1).toBe(2);
@@ -35,7 +38,10 @@ describe('/students', () => {
 		};
 
 		const createStudent = async (body) => {
-			return request.post('/api/students').send(body);
+			return request
+				.post('/api/students')
+				.send(body)
+				.set('Authorization', `Bearer ${TOKEN}`);
 		};
 
 		it('should return 201 if request is valid', async () => {
@@ -104,7 +110,9 @@ describe('/students', () => {
 
 		const getStudent = async () => {
 			// await Student.insertMany(validStudents);
-			return request.get('/api/students');
+			return request
+				.get('/api/students')
+				.set('Authorization', `Bearer ${TOKEN}`);
 		};
 
 		beforeEach(async () => {
