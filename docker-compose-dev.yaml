@@ -1,0 +1,21 @@
+version: '3'
+services:
+  server:
+    image: node:14-alphine
+    build: .
+    ports:
+      - 3000:3000
+    container_name: jr-cms-13_server
+    depends_on:
+      - mongo
+    tty: true
+    env_file: .env
+    volumes:
+      - ./:/app
+      - /app/node_modules/bcrypt/
+
+  mongo:
+    image: mongo:4
+    ports:
+      - 27017:27017
+    container_name: jr-cms-13_mongo
